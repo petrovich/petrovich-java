@@ -15,7 +15,7 @@ mvn -DskipTests=true clean package install
 
 ## Usage
 
-```
+```java
 PetrovichDeclinationMaker maker = PetrovichDeclinationMaker.getInstance();
 
 maker.make(NamePart.FIRSTNAME, Gender.MALE, Case.GENITIVE, "Иван");     //Ивана
@@ -25,7 +25,7 @@ maker.make(NamePart.MIDDLENAME, Gender.FEMALE, Case.DATIVE, "Ивановна");
 
 Also you can use more convenient syntax
 
-```
+```java
 PetrovichDeclinationMaker maker = PetrovichDeclinationMaker.getInstance();
 
 maker.male.firstname().toGenitive("Иван");      //"Ивана"
@@ -36,6 +36,6 @@ maker.female.middlename().toDative("Ивановна");     //"Ивановне"
 ### Custom rule file
 
 You can replace default rules file with some custom one. Only JSON format supported by now.
-```
+```java
 PetrovichDeclinationMaker maker = PetrovichDeclinationMaker.getInstance("/path/to/custom/rules.file.json");
 ```
