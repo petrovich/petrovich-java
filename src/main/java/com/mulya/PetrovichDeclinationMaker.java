@@ -23,8 +23,6 @@ public class PetrovichDeclinationMaker {
 	private static final String MODS_KEEP_IT_ALL_SYMBOL = ".";
 	private static final String MODS_REMOVE_LETTER_SYMBOL = "-";
 
-	private static PetrovichDeclinationMaker instance;
-
 	private RootBean rootRulesBean;
 
 	private PetrovichDeclinationMaker(String pathToRulesFile) throws IOException {
@@ -36,10 +34,7 @@ public class PetrovichDeclinationMaker {
 	}
 
 	public static PetrovichDeclinationMaker getInstance(String pathToRulesFile) throws IOException {
-		if (instance == null) {
-			instance = new PetrovichDeclinationMaker(pathToRulesFile);
-		}
-		return instance;
+		return new PetrovichDeclinationMaker(pathToRulesFile);
 	}
 
 	public String make(NamePart namePart, Gender gender, Case caseToUse, String originalName) {
