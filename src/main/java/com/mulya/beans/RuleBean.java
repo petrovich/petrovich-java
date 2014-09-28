@@ -20,6 +20,15 @@ public class RuleBean {
 	 */
 	private List<String> test;
 
+	public RuleBean() {
+	}
+
+	public RuleBean(String gender, List<String> mods, List<String> test) {
+		this.gender = gender;
+		this.mods = mods;
+		this.test = test;
+	}
+
 	public String getGender() {
 		return gender;
 	}

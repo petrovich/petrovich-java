@@ -20,6 +20,8 @@ import java.util.List;
 public class PetrovichDeclinationMaker {
 
 	private static final String DEFAULT_PATH_TO_RULES_FILE = "src/main/resources/rules.json";
+	private static final String MODS_KEEP_IT_ALL_SYMBOL = ".";
+	private static final String MODS_REMOVE_LETTER_SYMBOL = "-";
 
 	private static PetrovichDeclinationMaker instance;
 
@@ -61,18 +63,25 @@ public class PetrovichDeclinationMaker {
 				break;
 		}
 
-		modToApply = applyRuleBeanList(nameBean.getExceptions(), gender, caseToUse, originalName);
+		modToApply = findModInRuleBeanList(nameBean.getExceptions(), gender, caseToUse, originalName);
 
-		if (modToApply != null) {
-			modToApply = applyRuleBeanList(nameBean.getSuffixes(), gender, caseToUse, originalName);
+		if (modToApply == null) {
+			modToApply = findModInRuleBeanList(nameBean.getSuffixes(), gender, caseToUse, originalName);
 		}
 
 		if (modToApply != null) {
-			if (modToApply.equals(".")) {
-				result = originalName;
-			} else if (modToApply.contains("-")) {
+			result = applyModToName(modToApply, originalName);
+		}
+
+		return result;
+	}
+
+	protected String applyModToName(String modToApply, String name) {
+		String result = name;
+		if (!modToApply.equals(MODS_KEEP_IT_ALL_SYMBOL)) {
+			if (modToApply.contains(MODS_REMOVE_LETTER_SYMBOL)) {
 				for (int i = 0; i < modToApply.length(); i++) {
-					if (modToApply.charAt(i) == '-') {
+					if (Character.toString(modToApply.charAt(i)).equals(MODS_REMOVE_LETTER_SYMBOL)) {
 						result = result.substring(0, result.length() - 1);
 					} else {
 						result += modToApply.substring(i);
@@ -80,15 +89,14 @@ public class PetrovichDeclinationMaker {
 					}
 				}
 			} else {
-				result = originalName + modToApply;
+				result = name + modToApply;
 			}
 		}
-
 		return result;
 	}
 
-	protected String applyRuleBeanList(List<RuleBean> ruleBeanList, Gender gender, Case caseToUse, String originalName) {
-		String result = originalName;
+	protected String findModInRuleBeanList(List<RuleBean> ruleBeanList, Gender gender, Case caseToUse, String originalName) {
+		String result = null;
 		if (ruleBeanList != null) {
 			for(RuleBean ruleBean : ruleBeanList) {
 				for (String test : ruleBean.getTest()) {

@@ -20,6 +20,14 @@ public class NameBean {
 		return exceptions;
 	}
 
+	public NameBean() {
+	}
+
+	public NameBean(List<RuleBean> exceptions, List<RuleBean> suffixes) {
+		this.exceptions = exceptions;
+		this.suffixes = suffixes;
+	}
+
 	public void setExceptions(List<RuleBean> exceptions) {
 		this.exceptions = exceptions;
 	}

@@ -18,6 +18,15 @@ public class RootBean {
 	 */
 	private NameBean middlename;
 
+	public RootBean() {
+	}
+
+	public RootBean(NameBean lastname, NameBean firstname, NameBean middlename) {
+		this.lastname = lastname;
+		this.firstname = firstname;
+		this.middlename = middlename;
+	}
+
 	public NameBean getLastname() {
 		return lastname;
 	}
