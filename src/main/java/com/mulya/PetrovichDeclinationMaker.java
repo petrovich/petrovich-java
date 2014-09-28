@@ -25,6 +25,11 @@ public class PetrovichDeclinationMaker {
 
 	private RootBean rootRulesBean;
 
+	public GenderCurryedMaker male = new GenderCurryedMaker(Gender.MALE);
+	public GenderCurryedMaker female = new GenderCurryedMaker(Gender.FEMALE);
+	public GenderCurryedMaker androgynous = new GenderCurryedMaker(Gender.ANDROGYNOUS);
+
+
 	private PetrovichDeclinationMaker(String pathToRulesFile) throws IOException {
 		rootRulesBean = JSON.std.beanFrom(RootBean.class, new String(Files.readAllBytes(Paths.get(pathToRulesFile))));
 	}
@@ -104,5 +109,55 @@ public class PetrovichDeclinationMaker {
 		}
 
 		return result;
+	}
+
+	protected class GenderCurryedMaker {
+		private Gender gender;
+
+		protected GenderCurryedMaker(Gender gender) {
+			this.gender = gender;
+		}
+
+		public GenderAndNamePartCurryedMaker firstname() {
+			return new GenderAndNamePartCurryedMaker(gender, NamePart.FIRSTNAME);
+		}
+
+		public GenderAndNamePartCurryedMaker lastname() {
+			return new GenderAndNamePartCurryedMaker(gender, NamePart.LASTNAME);
+		}
+
+		public GenderAndNamePartCurryedMaker middlename() {
+			return new GenderAndNamePartCurryedMaker(gender, NamePart.MIDDLENAME);
+		}
+	}
+
+	protected class GenderAndNamePartCurryedMaker {
+		private NamePart namePart;
+		private Gender gender;
+
+		protected GenderAndNamePartCurryedMaker(Gender gender, NamePart namePart) {
+			this.gender = gender;
+			this.namePart = namePart;
+		}
+
+		public String toGenitive(String name) {
+			return make(namePart, gender, Case.GENITIVE, name);
+		}
+
+		public String toDative(String name) {
+			return make(namePart, gender, Case.DATIVE, name);
+		}
+
+		public String toAccusative(String name) {
+			return make(namePart, gender, Case.ACCUSATIVE, name);
+		}
+
+		public String toInstrumental(String name) {
+			return make(namePart, gender, Case.INSTRUMENTAL, name);
+		}
+
+		public String toPrepositional(String name) {
+			return make(namePart, gender, Case.PREPOSITIONAL, name);
+		}
 	}
 }

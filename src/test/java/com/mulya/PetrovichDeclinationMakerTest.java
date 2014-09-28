@@ -76,4 +76,25 @@ public class PetrovichDeclinationMakerTest {
 
 	}
 
+	public void testMake2() throws Exception {
+		assertEquals(maker.male.firstname().toGenitive("Ринат"), "Рината");
+		assertEquals(maker.male.firstname().toDative("Ринат"), "Ринату");
+		assertEquals(maker.male.firstname().toAccusative("Ринат"), "Рината");
+		assertEquals(maker.male.firstname().toInstrumental("Ринат"), "Ринатом");
+		assertEquals(maker.male.firstname().toPrepositional("Ринат"), "Ринате");
+
+		assertEquals(maker.male.lastname().toGenitive("Мулюков"), "Мулюкова");
+		assertEquals(maker.male.lastname().toDative("Мулюков"), "Мулюкову");
+		assertEquals(maker.male.lastname().toAccusative("Мулюков"), "Мулюкова");
+		assertEquals(maker.male.lastname().toInstrumental("Мулюков"), "Мулюковым");
+		assertEquals(maker.male.lastname().toPrepositional("Мулюков"), "Мулюкове");
+
+		assertEquals(maker.male.middlename().toGenitive("Рашитович"), "Рашитовича");
+		assertEquals(maker.male.middlename().toDative("Рашитович"), "Рашитовичу");
+		assertEquals(maker.male.middlename().toAccusative("Рашитович"), "Рашитовича");
+		assertEquals(maker.male.middlename().toInstrumental("Рашитович"), "Рашитовичем");
+		assertEquals(maker.male.middlename().toPrepositional("Рашитович"), "Рашитовиче");
+
+	}
+
 }
