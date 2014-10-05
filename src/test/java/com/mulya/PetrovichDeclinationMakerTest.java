@@ -97,4 +97,13 @@ public class PetrovichDeclinationMakerTest {
 
 	}
 
+	@Test
+	public void test() throws Exception {
+		assertEquals(maker.female.firstname().toGenitive("Мария"), "Марии");
+		assertEquals(maker.female.firstname().toDative("Мария"), "Марии");
+		assertEquals(maker.female.firstname().toAccusative("Мария"), "Марию");
+		assertEquals(maker.female.firstname().toInstrumental("Мария"), "Марией");
+		assertEquals(maker.female.firstname().toPrepositional("Мария"), "Марии");
+
+	}
 }
