@@ -98,11 +98,12 @@ public class PetrovichDeclinationMaker {
 	protected String findModInRuleBeanList(List<RuleBean> ruleBeanList, Gender gender, Case caseToUse, String originalName) {
 		String result = null;
 		if (ruleBeanList != null) {
+			out:
 			for(RuleBean ruleBean : ruleBeanList) {
 				for (String test : ruleBean.getTest()) {
 					if (ruleBean.getGender().equals(gender.getValue()) && originalName.endsWith(test)) {
 						result = ruleBean.getMods().get(caseToUse.getValue());
-						break;
+						break out;
 					}
 				}
 			}
