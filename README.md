@@ -5,7 +5,7 @@ __petrovich-java__ is library which inflects Russian names to given grammatical 
 
 __petrovich-java__ is Java implementation of Petrovich ruby gem.
 
-[![Build Status](https://travis-ci.org/mulya/petrovich-java.svg?branch=master)](https://travis-ci.org/mulya/petrovich-java)
+[![Build Status](https://travis-ci.org/petrovich/petrovich-java.svg?branch=master)](https://travis-ci.org/petrovich/petrovich-java)
 
 ## Building
 
