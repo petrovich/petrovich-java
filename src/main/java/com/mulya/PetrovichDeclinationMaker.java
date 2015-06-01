@@ -43,9 +43,7 @@ public class PetrovichDeclinationMaker {
 	}
 
 	public String make(NamePart namePart, Gender gender, Case caseToUse, String originalName) {
-		String modToApply;
 		String result = originalName;
-
 		NameBean nameBean;
 
 		switch (namePart) {
@@ -63,13 +61,19 @@ public class PetrovichDeclinationMaker {
 				break;
 		}
 
-		modToApply = findModInRuleBeanList(nameBean.getExceptions(), gender, caseToUse, originalName);
-
-		if (modToApply == null) {
-			modToApply = findModInRuleBeanList(nameBean.getSuffixes(), gender, caseToUse, originalName);
+		RuleBean ruleToUse = null;
+		RuleBean exceptionRuleBean = findInRuleBeanList(nameBean.getExceptions(), gender, originalName);
+		RuleBean suffixRuleBean = findInRuleBeanList(nameBean.getSuffixes(), gender, originalName);
+		if (exceptionRuleBean != null && exceptionRuleBean.getGender().equals(gender.getValue())) {
+			ruleToUse = exceptionRuleBean;
+		} else if (suffixRuleBean != null && suffixRuleBean.getGender().equals(gender.getValue())) {
+			ruleToUse = suffixRuleBean;
+		} else {
+			ruleToUse = exceptionRuleBean != null ? exceptionRuleBean : suffixRuleBean;
 		}
 
-		if (modToApply != null) {
+		if (ruleToUse != null) {
+			String modToApply = ruleToUse.getMods().get(caseToUse.getValue());
 			result = applyModToName(modToApply, originalName);
 		}
 
@@ -95,15 +99,20 @@ public class PetrovichDeclinationMaker {
 		return result;
 	}
 
-	protected String findModInRuleBeanList(List<RuleBean> ruleBeanList, Gender gender, Case caseToUse, String originalName) {
-		String result = null;
+	protected RuleBean findInRuleBeanList(List<RuleBean> ruleBeanList, Gender gender, String originalName) {
+		RuleBean result = null;
 		if (ruleBeanList != null) {
 			out:
 			for(RuleBean ruleBean : ruleBeanList) {
 				for (String test : ruleBean.getTest()) {
-					if (ruleBean.getGender().equals(gender.getValue()) && originalName.endsWith(test)) {
-						result = ruleBean.getMods().get(caseToUse.getValue());
-						break out;
+					if (originalName.endsWith(test)) {
+						if (ruleBean.getGender().equals(Gender.ANDROGYNOUS.getValue())) {
+							result = ruleBean;
+							break out;
+						} else if ((ruleBean.getGender().equals(gender.getValue()))) {
+							result = ruleBean;
+							break out;
+						}
 					}
 				}
 			}

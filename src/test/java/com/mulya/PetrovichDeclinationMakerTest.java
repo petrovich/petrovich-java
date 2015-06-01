@@ -31,6 +31,7 @@ public class PetrovichDeclinationMakerTest {
 		assertEquals(maker.applyModToName("--", "test"), "te");
 		assertEquals(maker.applyModToName("--st", "test"), "test");
 		assertEquals(maker.applyModToName("st", "test"), "testst");
+		assertEquals(maker.applyModToName(".", "test"), "test");
 		assertEquals(maker.applyModToName("", "test"), "test");
 
 	}
@@ -38,20 +39,27 @@ public class PetrovichDeclinationMakerTest {
 	public void testFindModInRuleBeanList() throws Exception {
 		List<RuleBean> ruleBeanList = Arrays.asList(
 				new RuleBean(Gender.MALE.getValue(), Arrays.asList("--11", "--12", "--13", "--14", "--15"), Arrays.asList("one")),
-				new RuleBean(Gender.MALE.getValue(), Arrays.asList("--21", "--22", "--23", "--24", "--25"), Arrays.asList("two"))
+				new RuleBean(Gender.FEMALE.getValue(), Arrays.asList("--21", "--22", "--23", "--24", "--25"), Arrays.asList("two")),
+				new RuleBean(Gender.ANDROGYNOUS.getValue(), Arrays.asList("--31", "--32", "--33", "--34", "--35"), Arrays.asList("three"))
 		);
 
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.MALE, Case.GENITIVE, "testone"), "--11");
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.FEMALE, Case.GENITIVE, "testone"), null);
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.ANDROGYNOUS, Case.GENITIVE, "testone"), null);
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.MALE, Case.DATIVE, "testone"), "--12");
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.MALE, Case.DATIVE, "teston"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "testone").getMods().get(Case.GENITIVE.getValue()), "--11");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.FEMALE, "testone"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.ANDROGYNOUS, "testone"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "testone").getMods().get(Case.DATIVE.getValue()), "--12");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "teston"), null);
 
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.MALE, Case.GENITIVE, "testtwo"), "--21");
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.FEMALE, Case.GENITIVE, "testtwo"), null);
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.ANDROGYNOUS, Case.GENITIVE, "testone"), null);
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.MALE, Case.DATIVE, "testtwo"), "--22");
-		assertEquals(maker.findModInRuleBeanList(ruleBeanList, Gender.MALE, Case.DATIVE, "testtw"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.FEMALE, "testtwo").getMods().get(Case.GENITIVE.getValue()), "--21");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "testtwo"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.ANDROGYNOUS, "testone"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.FEMALE, "testtwo").getMods().get(Case.DATIVE.getValue()), "--22");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.FEMALE, "testtw"), null);
+
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "testthree").getMods().get(Case.GENITIVE.getValue()), "--31");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.FEMALE, "testthree").getMods().get(Case.GENITIVE.getValue()), "--31");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.ANDROGYNOUS, "testone"), null);
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "testthree").getMods().get(Case.DATIVE.getValue()), "--32");
+		assertEquals(maker.findInRuleBeanList(ruleBeanList, Gender.MALE, "testtw"), null);
 
 	}
 
@@ -98,12 +106,21 @@ public class PetrovichDeclinationMakerTest {
 	}
 
 	@Test
-	public void test() throws Exception {
+	public void test_Maria() throws Exception {
 		assertEquals(maker.female.firstname().toGenitive("Мария"), "Марии");
 		assertEquals(maker.female.firstname().toDative("Мария"), "Марии");
 		assertEquals(maker.female.firstname().toAccusative("Мария"), "Марию");
 		assertEquals(maker.female.firstname().toInstrumental("Мария"), "Марией");
 		assertEquals(maker.female.firstname().toPrepositional("Мария"), "Марии");
+	}
 
+	@Test
+	public void test_genitive() throws Exception {
+		assertEquals(maker.female.firstname().toGenitive("Бьянка"), "Бьянки");
+		assertEquals(maker.male.lastname().toGenitive("Левобережный"), "Левобережного");
+		assertEquals(maker.male.firstname().toGenitive("Никита"), "Никиты");
+		assertEquals(maker.male.firstname().toGenitive("Дима"), "Димы");
+		assertEquals(maker.female.firstname().toGenitive("Ольга"), "Ольги");
+		assertEquals(maker.female.lastname().toGenitive("Маковецкая"), "Маковецкой");
 	}
 }
