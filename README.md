@@ -5,7 +5,7 @@ __petrovich-java__ is library which inflects Russian names to given grammatical 
 
 __petrovich-java__ is Java implementation of Petrovich ruby gem.
 
-[![Build Status](https://travis-ci.org/petrovich/petrovich-java.svg?branch=master)](https://travis-ci.org/petrovich/petrovich-java)
+[![Build Status](https://travis-ci.org/petrovich/petrovich-java.svg?branch=master)]	(https://travis-ci.org/petrovich/petrovich-java)
 
 ## Building
 
@@ -39,3 +39,11 @@ You can replace default rules file with some custom one. Only JSON format suppor
 ```java
 PetrovichDeclinationMaker maker = PetrovichDeclinationMaker.getInstance("/path/to/custom/rules.file.json");
 ```
+
+### Accuracy
+
+You can read about accuracy statistics in [petrovich-ruby](https://github.com/petrovich/petrovich-ruby#Оценка-аккуратности) project front page
+
+### License
+
+This project available under MIT license
